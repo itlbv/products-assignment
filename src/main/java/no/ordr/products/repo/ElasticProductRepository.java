@@ -6,17 +6,20 @@ import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ElasticProductRepository implements ProductRepository {
 
+  private static final String INDEX_NAME = "products";
   private final ElasticsearchOperations elasticsearchOperations;
 
   @Autowired
   public ElasticProductRepository(ElasticsearchOperations elasticsearchOperations) {
     this.elasticsearchOperations = elasticsearchOperations;
-    System.out.println(this.elasticsearchOperations);
   }
 
   @Override
@@ -30,8 +33,10 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
-  public void save(Product product) {
-
+  public String save(Product product) {
+    IndexQuery indexQuery =
+        new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
+    return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
   }
 
   @Override

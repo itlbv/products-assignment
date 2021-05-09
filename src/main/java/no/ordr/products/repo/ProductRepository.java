@@ -10,7 +10,7 @@ public interface ProductRepository {
 
   Product get(String productId);
 
-  void save(Product product);
+  String save(Product product);
 
   void delete(String productId);
 

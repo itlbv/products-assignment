@@ -22,4 +22,9 @@ public class ProductController {
   public ResponseEntity<String> getAll() {
     return ResponseEntity.ok(productService.getAll());
   }
+
+  @GetMapping("/save")
+  public ResponseEntity<String> save() {
+    return ResponseEntity.ok(String.format("Saved with id [%s]", productService.save()));
+  }
 }
