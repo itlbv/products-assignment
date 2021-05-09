@@ -7,8 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductService {
 
+  private final ProductRepository productRepository;
+
   @Autowired
-  ProductRepository productRepository;
+  public ProductService(ProductRepository productRepository) {
+    this.productRepository = productRepository;
+  }
 
   public String getAll() {
     return String.valueOf(productRepository.getAll().size());

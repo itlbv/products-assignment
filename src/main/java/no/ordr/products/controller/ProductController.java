@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/product-service/v1")
 public class ProductController {
 
+  private final ProductService productService;
+
   @Autowired
-  ProductService productService;
+  public ProductController(ProductService productService) {
+    this.productService = productService;
+  }
 
   @GetMapping("/getAll")
   public ResponseEntity<String> getAll() {
