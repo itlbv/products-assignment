@@ -1,9 +1,11 @@
 package no.ordr.products.domain;
 
 import java.util.Set;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Product {
   private String id;
   private String name;
