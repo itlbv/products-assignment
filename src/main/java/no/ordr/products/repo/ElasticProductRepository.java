@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ElasticProductRepository implements ProductRepository {
+
+  private final ElasticsearchOperations elasticsearchOperations;
+
+  @Autowired
+  public ElasticProductRepository(ElasticsearchOperations elasticsearchOperations) {
+    this.elasticsearchOperations = elasticsearchOperations;
+    System.out.println(this.elasticsearchOperations);
+  }
 
   @Override
   public List<Product> getAll() {
