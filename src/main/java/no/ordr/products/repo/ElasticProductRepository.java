@@ -2,6 +2,7 @@ package no.ordr.products.repo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +40,24 @@ public class ElasticProductRepository implements ProductRepository {
     return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
   }
 
+  public String saveAll(List<Product> products) {
+    List<IndexQuery> indexQueries =
+        products.stream()
+            .map(p -> new IndexQueryBuilder().withId(p.getId()).withObject(p).build())
+            .collect(Collectors.toList());
+    return String.valueOf(
+        elasticsearchOperations.bulkIndex(indexQueries, IndexCoordinates.of(INDEX_NAME)).size());
+  }
+
   @Override
   public void delete(String productId) {
-
   }
 
   @Override
   public void addVariants(String productId, List<Variant> variants) {
-
   }
 
   @Override
   public void removeVariant(String productId, String variantId) {
-
   }
 }
