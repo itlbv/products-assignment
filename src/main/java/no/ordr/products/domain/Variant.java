@@ -1,8 +1,10 @@
 package no.ordr.products.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Variant {
   private String id;
   private String variantName;
