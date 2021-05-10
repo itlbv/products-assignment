@@ -53,6 +53,16 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
+  public Product getProductByVariantName(String variantName) {
+    Query query =
+        new NativeSearchQueryBuilder()
+            .withQuery(matchPhraseQuery("variants.variantName", variantName)).build();
+
+    return elasticsearchOperations.searchOne(query, Product.class)
+        .getContent(); //TODO may produce NPException, rewrite it
+  }
+
+  @Override
   public String save(Product product) {
     IndexQuery indexQuery =
         new IndexQueryBuilder().withId(product.getId()).withObject(product).build();

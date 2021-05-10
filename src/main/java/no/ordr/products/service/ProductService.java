@@ -26,6 +26,14 @@ public class ProductService {
     return productRepository.getProduct(name);
   }
 
+  public Variant getVariant(String variantName) {
+    Product product = productRepository.getProductByVariantName(variantName);
+    return product.getVariants().stream()
+        .filter(v -> v.getVariantName().equals(variantName))
+        .findFirst()
+        .orElse(null);
+  }
+
   public String save() {
     Set<Variant> variants =
         Set.of(
