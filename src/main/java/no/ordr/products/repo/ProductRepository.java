@@ -13,9 +13,11 @@ public interface ProductRepository {
 
   Product getProductByVariantName(String variantName);
 
-  String save(Product product);
+  String saveProduct(Product product);
 
-  void delete(String productId);
+  boolean deleteProduct(String productId);
+
+  boolean deleteVariant(String variantId);
 
   void addVariants(String productId, List<Variant> variants);
 

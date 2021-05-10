@@ -39,6 +39,14 @@ public class ProductService {
         Set.of(
             Variant.builder().variantName("1").build(), Variant.builder().variantName("2").build());
     Product product = Product.builder().name("test product").variants(variants).build();
-    return productRepository.save(product);
+    return productRepository.saveProduct(product);
+  }
+
+  public boolean deleteProduct(String productId) {
+    return productRepository.deleteProduct(productId);
+  }
+
+  public boolean deleteVariant(String variantId) {
+    return productRepository.deleteVariant(variantId);
   }
 }

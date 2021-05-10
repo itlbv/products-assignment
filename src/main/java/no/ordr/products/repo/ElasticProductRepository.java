@@ -4,6 +4,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
@@ -48,22 +49,25 @@ public class ElasticProductRepository implements ProductRepository {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("name", productName)).build();
 
-    return elasticsearchOperations.searchOne(query, Product.class)
-        .getContent(); //TODO may produce NPException, rewrite it
+    return elasticsearchOperations
+        .searchOne(query, Product.class)
+        .getContent(); // TODO may produce NPException, rewrite it
   }
 
   @Override
   public Product getProductByVariantName(String variantName) {
     Query query =
         new NativeSearchQueryBuilder()
-            .withQuery(matchPhraseQuery("variants.variantName", variantName)).build();
+            .withQuery(matchPhraseQuery("variants.variantName", variantName))
+            .build();
 
-    return elasticsearchOperations.searchOne(query, Product.class)
-        .getContent(); //TODO may produce NPException, rewrite it
+    return elasticsearchOperations
+        .searchOne(query, Product.class)
+        .getContent(); // TODO may produce NPException, rewrite it
   }
 
   @Override
-  public String save(Product product) {
+  public String saveProduct(Product product) {
     IndexQuery indexQuery =
         new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
     return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
@@ -79,7 +83,29 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
-  public void delete(String productId) {
+  public boolean deleteProduct(String productId) {
+    Query query =
+        new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("id", productId)).build();
+
+    elasticsearchOperations.delete(query, Product.class);
+    return true; // TODO fix this
+  }
+
+  @Override
+  public boolean deleteVariant(String variantId) {
+    Query productQuery =
+        new NativeSearchQueryBuilder()
+            .withQuery(matchPhraseQuery("variants.id", variantId))
+            .build();
+
+    Product product =
+        Optional.of(elasticsearchOperations.searchOne(productQuery, Product.class).getContent())
+            .orElseThrow(Error::new);
+
+    product.getVariants().removeIf(v -> v.getId().equals(variantId));
+
+    saveProduct(product);
+    return true; // TODO fix this
   }
 
   @Override

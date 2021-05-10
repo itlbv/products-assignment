@@ -41,4 +41,16 @@ public class ProductController {
   public ResponseEntity<String> save() {
     return ResponseEntity.ok(String.format("Saved with id [%s]", productService.save()));
   }
+
+  @GetMapping("/deleteProduct")
+  public ResponseEntity<String> deleteProduct(@RequestParam String productId) {
+    return productService.deleteProduct(productId)
+        ? ResponseEntity.ok(String.format("Deleted product with id [%s]", productId))
+        : ResponseEntity.ok(String.format("Error with product %s", productId));
+  }
+
+  @GetMapping("/deleteVariant")
+  public Boolean deleteVariant(@RequestParam String variantId) {
+    return productService.deleteVariant(variantId);
+  }
 }
