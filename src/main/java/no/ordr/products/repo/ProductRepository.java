@@ -9,11 +9,15 @@ public interface ProductRepository {
 
   Collection<Product> getAll();
 
-  Product getProduct(String productName);
+  Product getProductByName(String productName);
+
+  Product getProductById(String productId);
 
   Product getProductByVariantName(String variantName);
 
   String saveProduct(Product product);
+
+  String addVariant(String productId, Variant variant);
 
   String updateVariant(String variantId, Variant variant);
 

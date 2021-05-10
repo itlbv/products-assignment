@@ -53,6 +53,13 @@ public class ProductController {
         .ok(String.format("Saved with id [%s]", productService.updateVariant(variantId, variant)));
   }
 
+  @PutMapping("/addVariant")
+  public ResponseEntity<String> addVariant(@RequestParam String productId,
+      @RequestBody Variant variant) {
+    return ResponseEntity
+        .ok(String.format("Saved with id [%s]", productService.addVariant(productId, variant)));
+  }
+
   @GetMapping("/deleteProduct")
   public ResponseEntity<String> deleteProduct(@RequestParam String productId) {
     return productService.deleteProduct(productId)

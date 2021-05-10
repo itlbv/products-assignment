@@ -45,9 +45,19 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
-  public Product getProduct(String productName) {
+  public Product getProductByName(String productName) {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("name", productName)).build();
+
+    return elasticsearchOperations
+        .searchOne(query, Product.class)
+        .getContent(); // TODO may produce NPException, rewrite it
+  }
+
+  @Override
+  public Product getProductById(String productId) {
+    Query query =
+        new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("id", productId)).build();
 
     return elasticsearchOperations
         .searchOne(query, Product.class)
@@ -91,6 +101,13 @@ public class ElasticProductRepository implements ProductRepository {
     IndexQuery indexQuery =
         new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
     return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
+  }
+
+  @Override
+  public String addVariant(String productId, Variant variant) {
+    Product product = getProductById(productId);
+    product.getVariants().add(variant);
+    return saveProduct(product);
   }
 
   @Override

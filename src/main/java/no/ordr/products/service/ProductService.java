@@ -22,7 +22,7 @@ public class ProductService {
   }
 
   public Product getProduct(String name) {
-    return productRepository.getProduct(name);
+    return productRepository.getProductByName(name);
   }
 
   public Variant getVariant(String variantName) {
@@ -35,6 +35,10 @@ public class ProductService {
 
   public String saveProduct(Product product) {
     return productRepository.saveProduct(product);
+  }
+
+  public String addVariant(String productId, Variant variant) {
+    return productRepository.addVariant(productId, variant);
   }
 
   public String updateVariant(String variantId, Variant variant) {
