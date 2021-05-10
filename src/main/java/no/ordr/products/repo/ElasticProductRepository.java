@@ -161,12 +161,4 @@ public class ElasticProductRepository implements ProductRepository {
     saveProduct(product);
     return true; // TODO fix this
   }
-
-  @Override
-  public void addVariants(String productId, List<Variant> variants) {
-  }
-
-  @Override
-  public void removeVariant(String productId, String variantId) {
-  }
 }
