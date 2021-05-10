@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/product-service/v1/admin")
-public class ElasticsearchAdminController {
+public class AdminController {
 
   ElasticsearchAdminService adminService;
 
   @Autowired
-  public ElasticsearchAdminController(ElasticsearchAdminService adminService) {
+  public AdminController(ElasticsearchAdminService adminService) {
     this.adminService = adminService;
   }
 
