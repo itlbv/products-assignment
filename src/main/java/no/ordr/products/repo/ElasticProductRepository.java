@@ -1,5 +1,7 @@
 package no.ordr.products.repo;
 
+import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +12,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,8 +33,12 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
-  public Product get(String productId) {
-    return null;
+  public Product getProduct(String productName) {
+    Query query =
+        new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("name", productName)).build();
+
+    return elasticsearchOperations.search(query, Product.class).getSearchHits().get(0)
+        .getContent(); //TODO rewrite this
   }
 
   @Override

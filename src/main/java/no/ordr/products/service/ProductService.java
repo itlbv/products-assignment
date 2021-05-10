@@ -21,6 +21,10 @@ public class ProductService {
     return String.valueOf(productRepository.getAll().size());
   }
 
+  public Product getProduct(String name) {
+    return productRepository.getProduct(name);
+  }
+
   public String save() {
     Set<Variant> variants =
         Set.of(
