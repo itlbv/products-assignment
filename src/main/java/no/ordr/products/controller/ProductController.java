@@ -7,6 +7,8 @@ import no.ordr.products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +39,10 @@ public class ProductController {
     return ResponseEntity.ok(productService.getVariant(variantName));
   }
 
-  @GetMapping("/save")
-  public ResponseEntity<String> save() {
-    return ResponseEntity.ok(String.format("Saved with id [%s]", productService.save()));
+  @PutMapping("/saveProduct")
+  public ResponseEntity<String> saveProduct(@RequestBody Product product) {
+    return ResponseEntity
+        .ok(String.format("Saved with id [%s]", productService.saveProduct(product)));
   }
 
   @GetMapping("/deleteProduct")

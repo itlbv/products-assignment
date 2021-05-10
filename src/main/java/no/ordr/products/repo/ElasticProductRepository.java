@@ -66,13 +66,6 @@ public class ElasticProductRepository implements ProductRepository {
         .getContent(); // TODO may produce NPException, rewrite it
   }
 
-  @Override
-  public String saveProduct(Product product) {
-    IndexQuery indexQuery =
-        new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
-    return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
-  }
-
   public String saveAll(List<Product> products) {
     List<IndexQuery> indexQueries =
         products.stream()
@@ -80,6 +73,13 @@ public class ElasticProductRepository implements ProductRepository {
             .collect(Collectors.toList());
     return String.valueOf(
         elasticsearchOperations.bulkIndex(indexQueries, IndexCoordinates.of(INDEX_NAME)).size());
+  }
+
+  @Override
+  public String saveProduct(Product product) {
+    IndexQuery indexQuery =
+        new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
+    return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
   }
 
   @Override
