@@ -15,6 +15,8 @@ public interface ProductRepository {
 
   String saveProduct(Product product);
 
+  String updateVariant(String variantId, Variant variant);
+
   boolean deleteProduct(String productId);
 
   boolean deleteVariant(String variantId);

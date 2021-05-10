@@ -66,6 +66,17 @@ public class ElasticProductRepository implements ProductRepository {
         .getContent(); // TODO may produce NPException, rewrite it
   }
 
+  public Product getProductByVariantId(String variantId) {
+    Query query =
+        new NativeSearchQueryBuilder()
+            .withQuery(matchPhraseQuery("variants.id", variantId))
+            .build();
+
+    return elasticsearchOperations
+        .searchOne(query, Product.class)
+        .getContent(); // TODO may produce NPException, rewrite it
+  }
+
   public String saveAll(List<Product> products) {
     List<IndexQuery> indexQueries =
         products.stream()
@@ -80,6 +91,14 @@ public class ElasticProductRepository implements ProductRepository {
     IndexQuery indexQuery =
         new IndexQueryBuilder().withId(product.getId()).withObject(product).build();
     return elasticsearchOperations.index(indexQuery, IndexCoordinates.of(INDEX_NAME));
+  }
+
+  @Override
+  public String updateVariant(String variantId, Variant variant) {
+    Product product = getProductByVariantId(variantId);
+    product.getVariants().removeIf(v -> v.getId().equals(variantId));
+    product.getVariants().add(variant);
+    return saveProduct(product);
   }
 
   @Override

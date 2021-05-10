@@ -37,6 +37,10 @@ public class ProductService {
     return productRepository.saveProduct(product);
   }
 
+  public String updateVariant(String variantId, Variant variant) {
+    return productRepository.updateVariant(variantId, variant);
+  }
+
   public boolean deleteProduct(String productId) {
     return productRepository.deleteProduct(productId);
   }
