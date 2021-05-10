@@ -1,5 +1,6 @@
 package no.ordr.products.controller;
 
+import java.util.Collection;
 import no.ordr.products.domain.Product;
 import no.ordr.products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ProductController {
   }
 
   @GetMapping("/getAll")
-  public ResponseEntity<String> getAll() {
+  public ResponseEntity<Collection<Product>> getAll() {
     return ResponseEntity.ok(productService.getAll());
   }
 

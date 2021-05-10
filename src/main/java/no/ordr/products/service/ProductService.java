@@ -1,5 +1,6 @@
 package no.ordr.products.service;
 
+import java.util.Collection;
 import java.util.Set;
 import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
@@ -17,8 +18,8 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
-  public String getAll() {
-    return String.valueOf(productRepository.getAll().size());
+  public Collection<Product> getAll() {
+    return productRepository.getAll();
   }
 
   public Product getProduct(String name) {

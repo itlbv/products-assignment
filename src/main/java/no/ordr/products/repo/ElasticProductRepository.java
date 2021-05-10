@@ -1,14 +1,16 @@
 package no.ordr.products.repo;
 
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import no.ordr.products.domain.Product;
 import no.ordr.products.domain.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
@@ -29,7 +31,16 @@ public class ElasticProductRepository implements ProductRepository {
 
   @Override
   public List<Product> getAll() {
-    return new ArrayList<>();
+    Query query =
+        new NativeSearchQueryBuilder()
+            .withQuery(matchAllQuery())
+            .withPageable(
+                PageRequest.of(0, 10000)) // without this Elasticsearch returns only 10 documents
+            .build();
+
+    return elasticsearchOperations.search(query, Product.class).getSearchHits().stream()
+        .map(SearchHit::getContent)
+        .collect(Collectors.toList());
   }
 
   @Override
