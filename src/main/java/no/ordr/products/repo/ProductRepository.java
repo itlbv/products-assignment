@@ -11,8 +11,6 @@ public interface ProductRepository {
 
   Product getProductByName(String productName);
 
-  Product getProductById(String productId);
-
   Product getProductByVariantName(String variantName);
 
   String saveProduct(Product product);

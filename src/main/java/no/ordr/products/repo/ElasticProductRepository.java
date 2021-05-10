@@ -54,8 +54,7 @@ public class ElasticProductRepository implements ProductRepository {
         .getContent(); // TODO may produce NPException, rewrite it
   }
 
-  @Override
-  public Product getProductById(String productId) {
+  private Product getProductById(String productId) {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("id", productId)).build();
 
