@@ -2,7 +2,9 @@ package no.ordr.products.repo;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +40,16 @@ public class ElasticProductRepository implements ProductRepository {
             .withPageable(
                 PageRequest.of(0, 10000)) // without this Elasticsearch returns only 10 documents
             .build();
+
+    return elasticsearchOperations.search(query, Product.class).getSearchHits().stream()
+        .map(SearchHit::getContent)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public Collection<Product> search(String searchString) {
+    Query query =
+        new NativeSearchQueryBuilder().withQuery(matchQuery("name", searchString)).build();
 
     return elasticsearchOperations.search(query, Product.class).getSearchHits().stream()
         .map(SearchHit::getContent)

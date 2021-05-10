@@ -21,6 +21,10 @@ public class ProductService {
     return productRepository.getAll();
   }
 
+  public Collection<Product> search(String searchString) {
+    return productRepository.search(searchString);
+  }
+
   public Product getProduct(String name) {
     return productRepository.getProductByName(name);
   }

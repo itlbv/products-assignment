@@ -30,6 +30,11 @@ public class ProductController {
     return ResponseEntity.ok(productService.getAll());
   }
 
+  @GetMapping("/search")
+  public ResponseEntity<Collection<Product>> search(@RequestParam String searchString) {
+    return ResponseEntity.ok(productService.search(searchString));
+  }
+
   @GetMapping("/getProduct")
   public ResponseEntity<Product> getProduct(@RequestParam String productName) {
     return ResponseEntity.ok(productService.getProduct(productName));

@@ -9,6 +9,8 @@ public interface ProductRepository {
 
   Collection<Product> getAll();
 
+  Collection<Product> search(String searchString);
+
   Product getProductByName(String productName);
 
   Product getProductByVariantName(String variantName);
