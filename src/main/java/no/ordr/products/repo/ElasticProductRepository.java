@@ -48,8 +48,8 @@ public class ElasticProductRepository implements ProductRepository {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("name", productName)).build();
 
-    return elasticsearchOperations.search(query, Product.class).getSearchHits().get(0)
-        .getContent(); //TODO rewrite this
+    return elasticsearchOperations.searchOne(query, Product.class)
+        .getContent(); //TODO may produce NPException, rewrite it
   }
 
   @Override
