@@ -103,6 +103,13 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
+  public String updateProduct(String productId, Product productNew) {
+    deleteProduct(productId);
+    saveProduct(productNew);
+    return null;
+  }
+
+  @Override
   public String addVariant(String productId, Variant variant) {
     Product product = getProductById(productId);
     product.getVariants().add(variant);

@@ -37,6 +37,10 @@ public class ProductService {
     return productRepository.saveProduct(product);
   }
 
+  public String updateProduct(String productId, Product product) {
+    return productRepository.updateProduct(productId, product);
+  }
+
   public String addVariant(String productId, Variant variant) {
     return productRepository.addVariant(productId, variant);
   }

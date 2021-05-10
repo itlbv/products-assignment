@@ -46,6 +46,13 @@ public class ProductController {
         .ok(String.format("Saved with id [%s]", productService.saveProduct(product)));
   }
 
+  @PostMapping("/updateProduct")
+  public ResponseEntity<String> updateProduct(@RequestParam String productId,
+      @RequestBody Product product) {
+    return ResponseEntity
+        .ok(String.format("Saved with id [%s]", productService.updateProduct(productId, product)));
+  }
+
   @PostMapping("/updateVariant")
   public ResponseEntity<String> updateVariant(@RequestParam String variantId,
       @RequestBody Variant variant) {

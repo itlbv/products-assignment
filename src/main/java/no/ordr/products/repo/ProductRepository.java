@@ -15,6 +15,8 @@ public interface ProductRepository {
 
   String saveProduct(Product product);
 
+  String updateProduct(String productId, Product product);
+
   String addVariant(String productId, Variant variant);
 
   String updateVariant(String variantId, Variant variant);
