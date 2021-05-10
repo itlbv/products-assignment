@@ -60,19 +60,13 @@ public class ElasticProductRepository implements ProductRepository {
   public Product getProductByName(String productName) {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("name", productName)).build();
-
-    return elasticsearchOperations
-        .searchOne(query, Product.class)
-        .getContent(); // TODO may produce NPException, rewrite it
+    return getProduct(query);
   }
 
   private Product getProductById(String productId) {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("id", productId)).build();
-
-    return elasticsearchOperations
-        .searchOne(query, Product.class)
-        .getContent(); // TODO may produce NPException, rewrite it
+    return getProduct(query);
   }
 
   @Override
@@ -81,20 +75,19 @@ public class ElasticProductRepository implements ProductRepository {
         new NativeSearchQueryBuilder()
             .withQuery(matchPhraseQuery("variants.variantName", variantName))
             .build();
-
-    return elasticsearchOperations
-        .searchOne(query, Product.class)
-        .getContent(); // TODO may produce NPException, rewrite it
+    return getProduct(query);
   }
 
-  public Product getProductByVariantId(String variantId) {
+  private Product getProductByVariantId(String variantId) {
     Query query =
         new NativeSearchQueryBuilder()
             .withQuery(matchPhraseQuery("variants.id", variantId))
             .build();
+    return getProduct(query);
+  }
 
-    return elasticsearchOperations
-        .searchOne(query, Product.class)
+  private Product getProduct(Query query) {
+    return elasticsearchOperations.searchOne(query, Product.class)
         .getContent(); // TODO may produce NPException, rewrite it
   }
 
@@ -117,8 +110,7 @@ public class ElasticProductRepository implements ProductRepository {
   @Override
   public String updateProduct(String productId, Product productNew) {
     deleteProduct(productId);
-    saveProduct(productNew);
-    return null;
+    return saveProduct(productNew);
   }
 
   @Override
@@ -137,16 +129,15 @@ public class ElasticProductRepository implements ProductRepository {
   }
 
   @Override
-  public boolean deleteProduct(String productId) {
+  public void deleteProduct(String productId) {
     Query query =
         new NativeSearchQueryBuilder().withQuery(matchPhraseQuery("id", productId)).build();
 
     elasticsearchOperations.delete(query, Product.class);
-    return true; // TODO fix this
   }
 
   @Override
-  public boolean deleteVariant(String variantId) {
+  public void deleteVariant(String variantId) {
     Query productQuery =
         new NativeSearchQueryBuilder()
             .withQuery(matchPhraseQuery("variants.id", variantId))
@@ -159,6 +150,5 @@ public class ElasticProductRepository implements ProductRepository {
     product.getVariants().removeIf(v -> v.getId().equals(variantId));
 
     saveProduct(product);
-    return true; // TODO fix this
   }
 }

@@ -53,11 +53,11 @@ public class ProductService {
     return productRepository.updateVariant(variantId, variant);
   }
 
-  public boolean deleteProduct(String productId) {
-    return productRepository.deleteProduct(productId);
+  public void deleteProduct(String productId) {
+    productRepository.deleteProduct(productId);
   }
 
-  public boolean deleteVariant(String variantId) {
-    return productRepository.deleteVariant(variantId);
+  public void deleteVariant(String variantId) {
+    productRepository.deleteVariant(variantId);
   }
 }

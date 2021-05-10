@@ -22,7 +22,7 @@ public interface ProductRepository {
 
   String updateVariant(String variantId, Variant variant);
 
-  boolean deleteProduct(String productId);
+  void deleteProduct(String productId);
 
-  boolean deleteVariant(String variantId);
+  void deleteVariant(String variantId);
 }
